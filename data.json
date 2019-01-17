@@ -1,0 +1,96 @@
+{
+  "Radiators": {
+    "Marangoni Flow": {
+      "Specific area heat": 293.04,
+      "Specific area mass": 24.4,
+      "Radiator Temperature": 1300
+    },
+    "Electrostatic Membrane": {
+      "Specific area heat": 51.3,
+      "Specific area mass": 4.275,
+      "Radiator Temperature": 1000
+    },
+    "Hula-Hoop": {
+      "Specific area heat": 300,
+      "Specific area mass": 33,
+      "Radiator Temperature": 1300
+    },
+    "Buckytube Filament": {
+      "Specific area heat": 293.03,
+      "Specific area mass": 48.839,
+      "Radiator Temperature": 1300
+    },
+    "Curie Point": {
+      "Specific area heat": 212.75,
+      "Specific area mass": 35.459,
+      "Radiator Temperature": 1200
+    },
+    "Tin Droplet": {
+      "Specific area heat": 38.49,
+      "Specific area mass": 6.4154,
+      "Radiator Temperature": 1030
+    },
+    "Flux-Pinned Superthermal": {
+      "Specific area heat": 76,
+      "Specific area mass": 17,
+      "Radiator Temperature": 928
+    },
+    "Bubble Membrane": {
+      "Specific area heat": 21.01,
+      "Specific area mass": 7,
+      "Radiator Temperature": 800
+    },
+    "Mo/Li Heat Pipe": {
+      "Specific area heat": 453.54,
+      "Specific area mass": 151.18,
+      "Radiator Temperature": 1500
+    },
+    "Microtube Array": {
+      "Specific area heat": 102.6,
+      "Specific area mass": 34.2,
+      "Radiator Temperature": 1000
+    },
+    "ETHER": {
+      "Specific area heat": 212.75,
+      "Specific area mass": 70.92,
+      "Radiator Temperature": 1200
+    },
+    "Ti/K Heat Pipe": {
+      "Specific area heat": 150.22,
+      "Specific area mass": 100.14,
+      "Radiator Temperature": 1100
+    },
+    "SS/NaK Pumped": {
+      "Specific area heat": 90.83,
+      "Specific area mass": 60.554,
+      "Radiator Temperature": 970
+    },
+    "Salt-Cooled Reflux tube": {
+      "Specific area heat": 75,
+      "Specific area mass": 75,
+      "Radiator Temperature": 1100
+    },
+    "Life Support": {
+      "Specific area heat": 0.19,
+      "Specific area mass": 3.1,
+      "Radiator Temperature": 325
+    }
+  },
+  "Life Support": {
+    "Non-renewable Supplies": 2,
+    "Renewable Supplies": 1.5,
+    "Habitat Mass" : 100,
+    "Habitat Volume" : 100,
+    "Supply Volume" : 2000,
+    "Waste Heat" : 6,
+    "Energy Requirements" : 1.5
+  },
+  "Propulsion": {
+    "Thruster Mass": 650,
+    "Waste Factor": 0.0001
+  },
+  "Power Generation": {
+    "Reactor Mass": 67.5,
+    "Reactor Efficiency": 0.775
+  }
+}
