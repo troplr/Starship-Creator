@@ -1,13 +1,13 @@
-""" Module to collect all Fixed Data """
+"""Module to collect all Fixed Data."""
 
 import json
 
 
 class Data():
-    """ Loads and contains all Fixed Data """
+    """Loads and contains all Fixed Data."""
 
     def __init__(self):
-        """ Loads all Data """
+        """Loads all Data."""
         self.__load_data()
         self.power_lifesupport = 0
         self.power_weapons = 0

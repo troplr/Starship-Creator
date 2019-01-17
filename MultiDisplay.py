@@ -1,17 +1,16 @@
+"""MultiDisplay class."""
+
 from tkinter import Label, LabelFrame
 
-
 class MultiDisplay():
-    """
-    Class to display multiple Variables.
-    """
+    """Class to display multiple Variables."""
 
     def __init__(self, root, title):
-        """ Init the Class """
+        """Init the Class."""
         self.frame = LabelFrame(root, text=title, padx=4, pady=4)
 
     def make_display(self, entries):
-        """ Creates the Entries """
+        """Creates the Entries."""
         x = 0
         for key, value in entries.items():
             if isinstance(value["value"], MultiDisplay):

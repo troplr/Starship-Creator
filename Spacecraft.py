@@ -1,6 +1,4 @@
-"""
-Main Spacecraft class.
-"""
+"""Main Spacecraft class."""
 from tkinter import DoubleVar, IntVar, StringVar
 from MultiEntry import MultiEntry
 from MultiDisplay import MultiDisplay
@@ -8,41 +6,42 @@ from math import ceil
 
 
 def roundup(x, next_largest):
+    """Rounds a number up to the next largest."""
     return float(ceil(x / next_largest)) * next_largest
 
 
 class Spacecraft():
-    """ """
+    """Spacecraft Class."""
 
     def __init__(self, data):
-        """ Init the Spacecraft """
+        """Init the Spacecraft."""
         self.data = data
         self.subsections = {
             "Lifesupport": LifeSupport(data),
             "Propulsion": Propulsion(data),
             "Power Generation": PowerGeneration(data),
         }
-        self.no_reactors = IntVar(value=0)
-        self.mass_ratio = DoubleVar(value=0)
-        self.mass_armor = DoubleVar(value=0)
-        self.mass_defensive = DoubleVar(value=0)
-        self.mass_cargo = DoubleVar(value=0)
-        self.mass_other = DoubleVar(value=0)
-        self.mass_lifesupport = DoubleVar(value=0)
-        self.mass_propulsion = DoubleVar(value=0)
+        self.no_reactors = IntVar()
+        self.mass_ratio = DoubleVar()
+        self.mass_armor = DoubleVar()
+        self.mass_defensive = DoubleVar()
+        self.mass_cargo = DoubleVar()
+        self.mass_other = DoubleVar()
+        self.mass_lifesupport = DoubleVar()
+        self.mass_propulsion = DoubleVar()
         self.mass_reactor = DoubleVar()
         self.mass_total_dry = DoubleVar()
         self.mass_total_wet = DoubleVar()
         self.mass_propellant = DoubleVar()
 
     def calculate(self):
-        """ Calculates the spacecraft """
+        """Calculates the spacecraft."""
         for _, subsection in self.subsections.items():
             subsection.calculate()
         self.mass_lifesupport.set(
-            self.subsections["Lifesupport"].mass_supplies.get()
-            + self.subsections["Lifesupport"].mass_habitat.get()
-            + self.subsections["Lifesupport"].radiator.mass.get()
+            self.subsections["Lifesupport"].mass_supplies.get() +
+            self.subsections["Lifesupport"].mass_habitat.get() +
+            self.subsections["Lifesupport"].radiator.mass.get()
         )
         self.mass_propulsion.set(
             self.subsections["Propulsion"].mass_total_thruster.get()
@@ -51,20 +50,21 @@ class Spacecraft():
             self.subsections["Power Generation"].mass_total_reactor.get()
         )
         self.mass_total_dry.set(
-            self.mass_armor.get()
-            + self.mass_cargo.get()
-            + self.mass_other.get()
-            + self.mass_defensive.get()
-            + self.mass_propulsion.get()
-            + self.mass_lifesupport.get()
-            + self.mass_reactor.get()
+            self.mass_armor.get() +
+            self.mass_cargo.get() +
+            self.mass_other.get() +
+            self.mass_defensive.get() +
+            self.mass_propulsion.get() +
+            self.mass_lifesupport.get() +
+            self.mass_reactor.get()
         )
         self.mass_total_wet.set(
-            self.mass_total_dry.get()
-            + self.mass_propellant.get()
+            self.mass_total_dry.get() +
+            self.mass_propellant.get()
         )
 
     def make_entry(self, root):
+        """Creates the Multi Entry Widget."""
         column = 0
         for _, subsection in self.subsections.items():
             subsection.entry.frame.grid(column=column, row=0, sticky='new', padx=5)
@@ -81,12 +81,13 @@ class Spacecraft():
             "Other Mass": {
                 "value": self.mass_other,
                 "unit": "kg"
-            },
+            }
         }
         self.entry = MultiEntry(root, "Other Entries", entry)
         self.entry.frame.grid(column=column, row=0, sticky='new', padx=5)
 
     def make_display(self, root):
+        """Creates the Multi Display Widget."""
         column = 0
         for _, subsection in self.subsections.items():
             subsection.data_display.frame.grid(column=column, row=1, sticky='new', padx=5)
@@ -123,12 +124,10 @@ class Spacecraft():
 
 
 class PowerGeneration():
-    """
-    Contains all Data on Power Generation.
-    """
+    """Contains all Data on Power Generation."""
 
     def __init__(self, data):
-        """ Init the Power Generation. """
+        """Init the Power Generation."""
         self.data = data
         self.powergeneration = data.powergeneration
         efficiency = self.powergeneration["Reactor Efficiency"]
@@ -146,7 +145,7 @@ class PowerGeneration():
         self.make_display()
 
     def make_entry(self):
-        """ Make the Entry Form """
+        """Make the Entry Form."""
         entry = {
             "Number of Reactors": {
                 "value": self.no_reactors,
@@ -156,7 +155,7 @@ class PowerGeneration():
         self.entry = MultiEntry(self.data.main_frame, "Power Generation", entry)
 
     def make_display(self):
-        """ Make the Data Display """
+        """Make the Data Display."""
         data = {
             "Power Needed": {
                 "value": self.power_need,
@@ -195,7 +194,7 @@ class PowerGeneration():
         self.data_display.make_display(data)
 
     def calculate(self):
-        """ Do the calculation """
+        """Do the calculation."""
         no_reactors = self.no_reactors.get()
         efficiency = self.efficiency.get()
         reactor_mass = self.powergeneration["Reactor Mass"]
@@ -223,13 +222,13 @@ class PowerGeneration():
 
 
 class Propulsion():
-    """ Contains the Propulsion Data """
+    """Contains the Propulsion Data."""
 
     def __init__(self, data):
-        """ Init the Propulsion """
+        """Init the Propulsion."""
         self.data = data
         self.propulsion = data.propulsion
-        self.max_acceleration = DoubleVar(value=0)
+        self.max_acceleration = DoubleVar()
         self.no_thrusters = IntVar(value=2)
         self.power_thruster = DoubleVar(value=750)
         self.power_total_thruster = DoubleVar()
@@ -240,7 +239,7 @@ class Propulsion():
         self.make_display()
 
     def make_entry(self):
-        """ Make the Entry Form """
+        """Make the Entry Form."""
         entry = {
             "Max Acceneration": {
                 "value": self.max_acceleration,
@@ -258,7 +257,7 @@ class Propulsion():
         self.entry = MultiEntry(self.data.main_frame, "Propulsion", entry)
 
     def make_display(self):
-        """ Make the Data Display """
+        """Make the Data Display."""
         data = {
             "Total Thruster Power": {
                 "value": self.power_total_thruster,
@@ -277,7 +276,7 @@ class Propulsion():
         self.data_display.make_display(data)
 
     def calculate(self):
-        """ Do the calculations """
+        """Do the calculations."""
         power_thruster = self.power_thruster.get()
         max_acceleration = self.max_acceleration.get()
         no_thrusters = self.no_thrusters.get()
@@ -292,27 +291,27 @@ class Propulsion():
 
 
 class LifeSupport():
-    """ Contains the Life Support Data """
+    """Contains the Life Support Data."""
 
     def __init__(self, data):
-        """ Init the Life Support """
+        """Init the Life Support."""
         self.data = data
         self.life_support_data = data.life_support
-        self.crew = IntVar(value=0)
-        self.endurance = IntVar(value=0)
-        self.mass_supplies_nonrenewable = DoubleVar(value=0)
-        self.mass_supplies_renewable = DoubleVar(value=0)
-        self.mass_supplies = DoubleVar(value=0)
-        self.volume_habitat = DoubleVar(value=0)
-        self.mass_habitat = DoubleVar(value=0)
-        self.volume_supplies = DoubleVar(value=0)
-        self.power_requirements = DoubleVar(value=0)
+        self.crew = IntVar()
+        self.endurance = IntVar()
+        self.mass_supplies_nonrenewable = DoubleVar()
+        self.mass_supplies_renewable = DoubleVar()
+        self.mass_supplies = DoubleVar()
+        self.volume_habitat = DoubleVar()
+        self.mass_habitat = DoubleVar()
+        self.volume_supplies = DoubleVar()
+        self.power_requirements = DoubleVar()
         self.radiator = Radiator(data, "Life Support")
         self.make_entry()
         self.make_display()
 
     def make_entry(self):
-        """ Create the Entry Form for Data """
+        """Create the Entry Form for Data."""
         entry = {
             "Crew size": {
                 "value": self.crew,
@@ -326,7 +325,7 @@ class LifeSupport():
         self.entry = MultiEntry(self.data.main_frame, "Crew", entry)
 
     def make_display(self):
-        """ Create the Data Display for Data """
+        """Create the Data Display for Data."""
         self.data_display = MultiDisplay(self.data.main_frame, "Crew Data")
         self.radiator.make_display(self.data_display.frame)
         data = {
@@ -365,7 +364,7 @@ class LifeSupport():
         self.data_display.make_display(data)
 
     def calculate(self):
-        """ Calculates the Life support Data """
+        """Calculates the Life support Data."""
         crew = self.crew.get()
         endurance = self.endurance.get()
         mass_supplies_nonrenewable = crew * endurance \
@@ -392,23 +391,23 @@ class LifeSupport():
 
 
 class Radiator():
-    """ Contains Radiator Data """
+    """Contains Radiator Data."""
 
     def __init__(self, data, type):
-        """ Init the Radiator """
+        """Init the Radiator."""
         self.data = data
         self.radiators = data.radiators
         self.radiator_data = data.radiators[type]
         self.radiators_type = StringVar(value=type)
-        self.mass = DoubleVar(value=0)
-        self.area = DoubleVar(value=0)
-        self.waste_heat = DoubleVar(value=0)
+        self.mass = DoubleVar()
+        self.area = DoubleVar()
+        self.waste_heat = DoubleVar()
 
     def make_display(self):
-        """ Creates the Entry for Radiator Stuff """
+        """Creates the Entry for Radiator Stuff."""
 
     def make_display(self, root=None):
-        """ Creates the Display for the Radiator Stuff """
+        """Creates the Display for the Radiator Stuff."""
         data = {
             "Radiator Type": {
                 "value": self.radiators_type,
@@ -433,7 +432,7 @@ class Radiator():
         self.data_display.make_display(data)
 
     def calculate(self, waste_heat):
-        """ Calculates the Radiator Data """
+        """Calculates the Radiator Data."""
         self.waste_heat.set(waste_heat / 1e3)
         area = waste_heat / self.radiator_data["Specific area heat"]
         mass = waste_heat / self.radiator_data["Specific area mass"]
@@ -441,6 +440,6 @@ class Radiator():
         self.mass.set(mass)
 
     def change_radiator(self, type):
-        """ Change the radiator type """
+        """Change the radiator type."""
         self.radiator_data = self.radiators[type]
         self.radiators_type.set(type)
