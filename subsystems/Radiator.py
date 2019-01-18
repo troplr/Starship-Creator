@@ -1,6 +1,5 @@
 """Radiator Class."""
 
-from widgets.MultiEntry import MultiEntry
 from widgets.MultiDisplay import MultiDisplay
 from tkinter import DoubleVar, StringVar
 from subsystems.Subsystem import Subsystem

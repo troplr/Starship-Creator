@@ -1,7 +1,5 @@
 """Propulsion Class."""
 
-from widgets.MultiEntry import MultiEntry
-from widgets.MultiDisplay import MultiDisplay
 from tkinter import DoubleVar, IntVar
 from subsystems.Subsystem import Subsystem
 

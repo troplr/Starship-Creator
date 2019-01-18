@@ -1,7 +1,5 @@
 """Main Spacecraft class."""
 from tkinter import DoubleVar, IntVar, StringVar
-from widgets.MultiEntry import MultiEntry
-from widgets.MultiDisplay import MultiDisplay
 from subsystems.LifeSupport import LifeSupport
 from subsystems.Propulsion import Propulsion
 from subsystems.PowerGeneration import PowerGeneration
