@@ -24,20 +24,33 @@ class PowerGeneration(Subsystem):
         self.mass_total_reactor = DoubleVar()
         self.efficiency = DoubleVar(value=efficiency)
 
-        self.make_entry()
-        self.make_display()
-
-    def make_entry(self):
+    def make_entry(self, frame):
         """Make the Entry Form."""
         entry = {
             "Number of Reactors": {
                 "value": self.no_reactors,
-                "unit": ""
+                "unit": "",
+                "type": "Spinbox",
+                "config": {
+                    "from": 1,
+                    "to": 10,
+                    "increment": 1
+                }
+            },
+            "Power per Reactor": {
+                "value": self.power_reactor,
+                "unit": "MW",
+                "type": "Spinbox",
+                "config": {
+                    "from": 50,
+                    "to": 1000,
+                    "increment": 50
+                }
             }
         }
-        self.entry = MultiEntry(self.data.main_frame, "Power Generation", entry)
+        self._make_entry(frame, "Power Generation", entry)
 
-    def make_display(self):
+    def make_display(self, frame):
         """Make the Data Display."""
         data = {
             "Power Needed": {
@@ -50,10 +63,6 @@ class PowerGeneration(Subsystem):
             },
             "Overall Reactor Power": {
                 "value": self.power_overall,
-                "unit": "MW"
-            },
-            "Power per Reactor": {
-                "value": self.power_reactor,
                 "unit": "MW"
             },
             "Effective Power Overall": {
@@ -73,20 +82,17 @@ class PowerGeneration(Subsystem):
                 "unit": "kg"
             },
         }
-        self.data_display = MultiDisplay(self.data.main_frame, "Reactor Data")
-        self.data_display.make_display(data)
+        self._make_display(frame, "Reactor Data", data)
 
     def calculate(self):
         """Do the calculation."""
         no_reactors = self.no_reactors.get()
         efficiency = self.efficiency.get()
+        power_reactor = self.power_reactor.get()
         reactor_mass = self.powergeneration["Reactor Mass"]
         power_need = self.data.power_lifesupport + \
             self.data.power_weapons + \
             self.data.power_aux_thrusters
-        power_effective_need = power_need / efficiency
-        power_reactors = self._roundup(x=power_effective_need, next_largest=500)
-        power_reactor = self._roundup(x=power_reactors / no_reactors, next_largest=250)
         power_overall = power_reactor * no_reactors
         power_effective = power_overall * efficiency
         waste_heat = power_overall - power_effective

@@ -30,6 +30,7 @@ class MultiEntry():
                 "config": {
                     "from": 1,
                     "to": 10,
+                    "increment": 2,
                     "vaules": (1,2,4,8)
                 }
             },
@@ -69,15 +70,18 @@ class MultiEntry():
         """Creates a Spinbox."""
         begin = 0
         end = 0
+        increment = 1
         values = ()
         if "from" in config:
             begin = config["from"]
         if "to" in config:
             end = config["to"]
+        if "increment" in config:
+            increment = config["increment"]
         if "values" in config:
             values = config["values"]
         if begin:
-            return Spinbox(self.frame, textvariable=value, from_=begin, to=end)
+            return Spinbox(self.frame, textvariable=value, from_=begin, to=end, increment=increment)
         if list:
             return Spinbox(self.frame, textvariable=value, values=values)
 

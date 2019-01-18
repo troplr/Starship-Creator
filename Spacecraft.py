@@ -56,12 +56,8 @@ class Spacecraft(Subsystem):
         self.mass_total_dry.set(self._format_number(mass_total_dry))
         self.mass_total_wet.set(self._format_number(mass_total_wet))
 
-    def make_entry(self, root):
+    def make_entry(self, frame):
         """Creates the Multi Entry Widget."""
-        column = 0
-        for _, subsection in self.subsections.items():
-            subsection.entry.frame.grid(column=column, row=0, sticky='new', padx=5)
-            column = column + 1
         entry = {
             "Armor Mass": {
                 "value": self.mass_armor,
@@ -76,15 +72,10 @@ class Spacecraft(Subsystem):
                 "unit": "kg"
             }
         }
-        self.entry = MultiEntry(root, "Other Entries", entry)
-        self.entry.frame.grid(column=column, row=0, sticky='new', padx=5)
+        self._make_entry(frame, "Other Entries", entry)
 
-    def make_display(self, root):
+    def make_display(self, frame):
         """Creates the Multi Display Widget."""
-        column = 0
-        for _, subsection in self.subsections.items():
-            subsection.data_display.frame.grid(column=column, row=1, sticky='new', padx=5)
-            column = column + 1
         data = {
             "Overall Lifesupport Mass": {
                 "value": self.mass_lifesupport,
@@ -111,6 +102,4 @@ class Spacecraft(Subsystem):
                 "unit": "kg"
             }
         }
-        self.data_display = MultiDisplay(root, "Masses")
-        self.data_display.make_display(data)
-        self.data_display.frame.grid(column=column, row=1, sticky='new', padx=5)
+        self._make_display(frame, "Masses", data)

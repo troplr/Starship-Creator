@@ -24,10 +24,8 @@ class LifeSupport(Subsystem):
         self.volume_supplies = DoubleVar()
         self.power_requirements = DoubleVar()
         self.radiator = Radiator(data, "Life Support")
-        self.make_entry()
-        self.make_display()
 
-    def make_entry(self):
+    def make_entry(self, frame):
         """Create the Entry Form for Data."""
         entry = {
             "Crew size": {
@@ -39,11 +37,11 @@ class LifeSupport(Subsystem):
                 "unit": "days"
             }
         }
-        self.entry = MultiEntry(self.data.main_frame, "Crew", entry)
+        self._make_entry(frame, "Crew", entry)
 
-    def make_display(self):
+    def make_display(self, frame):
         """Create the Data Display for Data."""
-        self.data_display = MultiDisplay(self.data.main_frame, "Crew Data")
+        self.data_display = MultiDisplay(frame, "Crew Data")
         self.radiator.make_display(self.data_display.frame)
         data = {
             "Non-Renewable Supplies": {
@@ -79,6 +77,7 @@ class LifeSupport(Subsystem):
             }
         }
         self.data_display.make_display(data)
+        self.data_display.frame.grid(column=1, row=1, sticky='new', padx=5)
 
     def calculate(self):
         """Calculates the Life support Data."""

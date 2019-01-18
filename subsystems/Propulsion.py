@@ -20,10 +20,7 @@ class Propulsion(Subsystem):
         self.mass_total_thruster = DoubleVar()
         self.waste_power = DoubleVar()
 
-        self.make_entry()
-        self.make_display()
-
-    def make_entry(self):
+    def make_entry(self, frame):
         """Make the Entry Form."""
         entry = {
             "Max Acceneration": {
@@ -39,9 +36,9 @@ class Propulsion(Subsystem):
                 "unit": ""
             },
         }
-        self.entry = MultiEntry(self.data.main_frame, "Propulsion", entry)
+        self._make_entry(frame, "Propulsion", entry)
 
-    def make_display(self):
+    def make_display(self, frame):
         """Make the Data Display."""
         data = {
             "Total Thruster Power": {
@@ -57,8 +54,7 @@ class Propulsion(Subsystem):
                 "unit": "GW"
             }
         }
-        self.data_display = MultiDisplay(self.data.main_frame, "Propulsion Data")
-        self.data_display.make_display(data)
+        self._make_display(frame, "Propulsion Data", data)
 
     def calculate(self):
         """Do the calculations."""

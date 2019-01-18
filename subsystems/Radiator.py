@@ -19,10 +19,11 @@ class Radiator(Subsystem):
         self.area = DoubleVar()
         self.waste_heat = DoubleVar()
 
-    def make_entry(self):
+    def make_entry(self, frame):
         """Creates the Entry for Radiator Stuff."""
+        pass
 
-    def make_display(self, root=None):
+    def make_display(self, frame=None):
         """Creates the Display for the Radiator Stuff."""
         data = {
             "Radiator Type": {
@@ -42,9 +43,9 @@ class Radiator(Subsystem):
                 "unit": "kg"
             }
         }
-        if not root:
-            root = self.data_display
-        self.data_display = MultiDisplay(root, "Life Support Radiators")
+        if not frame:
+            frame = self.data_display
+        self.data_display = MultiDisplay(frame, "Life Support Radiators")
         self.data_display.make_display(data)
 
     def calculate(self, waste_heat):

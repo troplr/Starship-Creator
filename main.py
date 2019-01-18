@@ -7,6 +7,7 @@ Main Script to execute the SpaceShip Creator based on my spreadsheet.
 # ==================
 import tkinter as tk
 from tkinter import Button
+from tkinter.ttk import Notebook
 from Spacecraft import Spacecraft
 from Data import Data
 
@@ -25,11 +26,24 @@ def main():
 
     spacecraft = Spacecraft(data)
 
-    spacecraft.make_entry(main)
-    spacecraft.make_display(main)
+    notebook = Notebook(main)
+
+    spacecraft_tab = spacecraft.make_tab(notebook)
+    power_generation_tab = \
+        spacecraft.subsections["Power Generation"].make_tab(notebook)
+    propulsion_tab = spacecraft.subsections["Propulsion"].make_tab(notebook)
+    lifesupport_tab = spacecraft.subsections["Lifesupport"].make_tab(notebook)
+
+    notebook.add(spacecraft_tab, text="Spacecraft")
+    notebook.add(lifesupport_tab, text="Lifesupport")
+    notebook.add(power_generation_tab, text="Power Generation")
+    notebook.add(propulsion_tab, text="Propulsion")
+
+    notebook.grid(column=0, row=0)
+    notebook.enable_traversal()
 
     button = Button(main, text="Caclulate", command=spacecraft.calculate)
-    button.grid(column=2, row=3)
+    button.grid(column=0, row=1)
 
     main.mainloop()
 
