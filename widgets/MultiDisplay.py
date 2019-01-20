@@ -1,6 +1,6 @@
 """MultiDisplay class."""
-
 from tkinter import Label, LabelFrame
+
 
 class MultiDisplay():
     """Class to display multiple Variables."""
@@ -18,5 +18,6 @@ class MultiDisplay():
             else:
                 Label(self.frame, text=key).grid(column=0, row=x, sticky="w", padx=2)
                 Label(self.frame, textvariable=value["value"]).grid(column=1, row=x, sticky="e", padx=2)
-                Label(self.frame, text=value["unit"]).grid(column=2, row=x, sticky="w")
+                if "unit" in value:
+                    Label(self.frame, text=value["unit"]).grid(column=2, row=x, sticky="w")
             x = x + 1

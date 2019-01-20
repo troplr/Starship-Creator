@@ -92,5 +92,23 @@
   "Power Generation": {
     "Reactor Mass": 67.5,
     "Reactor Efficiency": 0.775
+  },
+  "Auxiliary Thrusters": {
+    "Thungsten Resistojet": {
+        "Power (MW)": 100,
+        "Thruster Mass (kg)": 50000,
+        "Thrust (kN)": 25000
+      },
+      "Microwave ElectroThermal": {
+        "Power (MW)": 100,
+        "Thruster Mass (kg)": 65000,
+        "Thrust (kN)": 20000
+      },
+      "Arcjet": {
+        "Power (MW)": 100,
+        "Thruster Mass (kg)": 45000,
+        "Thrust (kN)": 15000
+      }
+    }
   }
 }

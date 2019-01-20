@@ -51,7 +51,10 @@ class MultiEntry():
             Label(self.frame, text=key).grid(column=0, row=x, sticky='w', padx=2)
             if "type" in value:
                 if value["type"] == "Spinbox":
-                    entryfield = self.__spinbox(value["value"], value["config"])
+                    if "config" in value:
+                        entryfield = self.__spinbox(value["value"], value["config"])
+                    else:
+                        entryfield = self.__spinbox(value["value"])
                 if value["type"] == "Combobox":
                     entryfield = self.__combobox(value["value"], value["list"])
             else:
@@ -66,9 +69,9 @@ class MultiEntry():
         """Creates an Entry Widget."""
         return Entry(self.frame, textvariable=value, justify='right')
 
-    def __spinbox(self, value, config):
+    def __spinbox(self, value, config={}):
         """Creates a Spinbox."""
-        begin = 0
+        begin = 1
         end = 0
         increment = 1
         values = ()
@@ -80,10 +83,12 @@ class MultiEntry():
             increment = config["increment"]
         if "values" in config:
             values = config["values"]
-        if begin:
+        if "from" in config:
             return Spinbox(self.frame, textvariable=value, from_=begin, to=end, increment=increment)
-        if list:
+        elif "values" in config:
             return Spinbox(self.frame, textvariable=value, values=values)
+        else:
+            return Spinbox(self.frame)
 
     def __combobox(self, value, values):
         """Creates a Combobox."""

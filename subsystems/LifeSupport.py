@@ -4,6 +4,7 @@ from widgets.MultiDisplay import MultiDisplay
 from tkinter import DoubleVar, IntVar
 from subsystems.Radiator import Radiator
 from subsystems.Subsystem import Subsystem
+from widgets.QuantityVar import QuantityVar
 
 
 class LifeSupport(Subsystem):
@@ -15,13 +16,15 @@ class LifeSupport(Subsystem):
         self.life_support_data = data.life_support
         self.crew = IntVar()
         self.endurance = IntVar()
-        self.mass_supplies_nonrenewable = DoubleVar()
-        self.mass_supplies_renewable = DoubleVar()
-        self.mass_supplies = DoubleVar()
-        self.volume_habitat = DoubleVar()
-        self.mass_habitat = DoubleVar()
-        self.volume_supplies = DoubleVar()
-        self.power_requirements = DoubleVar()
+        self.mass_supplies_nonrenewable = QuantityVar(unit="g")
+        self.mass_supplies_renewable = QuantityVar(unit="g")
+        self.mass_supplies = QuantityVar(unit="g")
+        self.volume_habitat = QuantityVar(unit="m³")
+        self.mass_habitat = QuantityVar(unit="g")
+        self.volume_supplies = QuantityVar(unit="m³")
+        self.volume_total = QuantityVar(unit="m³")
+        self.mass_total = QuantityVar(unit="g")
+        self.power_requirements = QuantityVar(unit="W")
         self.radiator = Radiator(data, "Life Support")
 
     def make_entry(self, frame):
@@ -33,7 +36,13 @@ class LifeSupport(Subsystem):
             },
             "Endurance": {
                 "value": self.endurance,
-                "unit": "days"
+                "unit": "days",
+                "type": "Spinbox",
+                "config": {
+                    "from": 30,
+                    "to": 50 * 30,
+                    "increment": 30
+                }
             }
         }
         self._make_entry(frame, "Crew", entry)
@@ -45,31 +54,30 @@ class LifeSupport(Subsystem):
         data = {
             "Non-Renewable Supplies": {
                 "value": self.mass_supplies_nonrenewable,
-                "unit": "kg"
             },
             "Renewable Supplies": {
                 "value": self.mass_supplies_renewable,
-                "unit": "kg"
             },
             "Supplies Volume": {
                 "value": self.volume_supplies,
-                "unit": "m³"
             },
             "Total Supplies Mass": {
                 "value": self.mass_supplies,
-                "unit": "kg"
             },
             "Habitat Volume": {
                 "value": self.volume_habitat,
-                "unit": "m³"
             },
             "Habitat Mass": {
                 "value": self.mass_habitat,
-                "unit": "kg"
+            },
+            "Total Volume": {
+                "value": self.volume_total,
+            },
+            "Total Mass": {
+                "value": self.mass_total,
             },
             "Energy Requirements": {
                 "value": self.power_requirements,
-                "unit": "MW"
             },
             "Radiator": {
                 "value": self.radiator.data_display
@@ -83,23 +91,30 @@ class LifeSupport(Subsystem):
         crew = self.crew.get()
         endurance = self.endurance.get()
         mass_supplies_nonrenewable = crew * endurance \
-            * self.life_support_data["Non-renewable Supplies"]
+            * self.life_support_data["Non-renewable Supplies"] * 1000
         mass_supplies_renewable = crew * endurance * \
-            self.life_support_data["Renewable Supplies"]
+            self.life_support_data["Renewable Supplies"] * 1000
         volume_habitat = crew * self.life_support_data["Habitat Volume"]
-        mass_habitat = volume_habitat * self.life_support_data["Habitat Mass"]
+        mass_habitat = volume_habitat * self.life_support_data["Habitat Mass"] \
+            * 1000
         volume_supplies = (mass_supplies_renewable + mass_supplies_nonrenewable) \
-            / self.life_support_data["Supply Volume"]
+            / self.life_support_data["Supply Volume"] / 1000
         waste_heat = crew * self.life_support_data["Waste Heat"] * 1e3
         self.radiator.calculate(waste_heat)
-        power_requirements = crew * self.life_support_data["Energy Requirements"]
-        print(mass_habitat, ", ", mass_supplies_renewable, ", ", mass_supplies_nonrenewable, ", ", mass_habitat + mass_supplies_renewable + mass_supplies_nonrenewable)
+        power_requirements = crew * \
+            self.life_support_data["Energy Requirements"] * 1e6
+        volume_total = (volume_supplies + volume_habitat) * 1.1
+        mass_total = mass_habitat + mass_supplies_renewable + mass_supplies_nonrenewable
+        self.data.masses["Lifesupport Mass"] = mass_total
+
         # Change the Labels
         self.mass_supplies_nonrenewable.set(mass_supplies_nonrenewable)
         self.mass_supplies_renewable.set(mass_supplies_renewable)
         self.mass_supplies.set(mass_supplies_renewable + mass_supplies_nonrenewable)
         self.volume_habitat.set(volume_habitat)
         self.volume_supplies.set(volume_supplies)
+        self.volume_total.set(volume_total)
         self.mass_habitat.set(mass_habitat)
+        self.mass_total.set(mass_total)
         self.power_requirements.set(power_requirements)
         self.data.power_lifesupport = power_requirements

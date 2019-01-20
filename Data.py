@@ -21,3 +21,4 @@ class Data():
         self.propulsion = json_data["Propulsion"]
         self.powergeneration = json_data["Power Generation"]
         self.main_frame = None
+        self.masses = {}

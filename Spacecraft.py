@@ -4,6 +4,7 @@ from subsystems.LifeSupport import LifeSupport
 from subsystems.Propulsion import Propulsion
 from subsystems.PowerGeneration import PowerGeneration
 from subsystems.Subsystem import Subsystem
+from widgets.QuantityVar import QuantityVar
 
 
 class Spacecraft(Subsystem):
@@ -23,22 +24,20 @@ class Spacecraft(Subsystem):
         self.mass_defensive = DoubleVar()
         self.mass_cargo = DoubleVar()
         self.mass_other = DoubleVar()
-        self.mass_lifesupport = StringVar()
-        self.mass_propulsion = StringVar()
-        self.mass_reactor = StringVar()
-        self.mass_total_dry = StringVar()
-        self.mass_total_wet = StringVar()
-        self.mass_propellant = StringVar()
+        self.mass_lifesupport = QuantityVar(unit="g")
+        self.mass_propulsion = QuantityVar(unit="g")
+        self.mass_reactor = QuantityVar(unit="g")
+        self.mass_total_dry = QuantityVar(unit="g")
+        self.mass_total_wet = QuantityVar(unit="g")
+        self.mass_propellant = QuantityVar(unit="g")
 
     def calculate(self):
         """Calculates the spacecraft."""
         for _, subsection in self.subsections.items():
             subsection.calculate()
-        mass_lifesupport = self.subsections["Lifesupport"].mass_supplies.get() + \
-            self.subsections["Lifesupport"].mass_habitat.get() + \
-            self.subsections["Lifesupport"].radiator.mass.get()
-        mass_propulsion = self.subsections["Propulsion"].mass_total_thruster.get()
-        mass_reactor = self.subsections["Power Generation"].mass_total_reactor.get()
+        mass_lifesupport = self.data.masses["Lifesupport Mass"]
+        mass_propulsion = self.data.masses["Mass Thrusters"]
+        mass_reactor = self.data.masses["Total Reactor"]
         mass_total_dry = self.mass_armor.get() + \
             self.mass_cargo.get() + \
             self.mass_other.get() + \
@@ -48,11 +47,11 @@ class Spacecraft(Subsystem):
             mass_reactor
         mass_propellant = mass_total_dry
         mass_total_wet = mass_total_dry + mass_propellant
-        self.mass_lifesupport.set(self._format_number(mass_lifesupport))
-        self.mass_propulsion.set(self._format_number(mass_propulsion))
-        self.mass_reactor.set(self._format_number(mass_reactor))
-        self.mass_total_dry.set(self._format_number(mass_total_dry))
-        self.mass_total_wet.set(self._format_number(mass_total_wet))
+        self.mass_lifesupport.set(mass_lifesupport)
+        self.mass_propulsion.set(mass_propulsion)
+        self.mass_reactor.set(mass_reactor)
+        self.mass_total_dry.set(mass_total_dry)
+        self.mass_total_wet.set(mass_total_wet)
 
     def make_entry(self, frame):
         """Creates the Multi Entry Widget."""
@@ -77,27 +76,21 @@ class Spacecraft(Subsystem):
         data = {
             "Overall Lifesupport Mass": {
                 "value": self.mass_lifesupport,
-                "unit": "kg"
             },
             "Overall Propulsion Mass": {
                 "value": self.mass_propulsion,
-                "unit": "kg"
             },
             "Overall Reactor Mass": {
                 "value": self.mass_reactor,
-                "unit": "kg"
             },
             "Propellant Mass": {
                 "value": self.mass_propellant,
-                "unit": "kg"
             },
             "Total Dry Mass": {
                 "value": self.mass_total_dry,
-                "unit": "kg"
             },
             "Total Wet Mass": {
                 "value": self.mass_total_wet,
-                "unit": "kg"
             }
         }
         self._make_display(frame, "Masses", data)

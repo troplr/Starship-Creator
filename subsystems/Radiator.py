@@ -3,6 +3,7 @@
 from widgets.MultiDisplay import MultiDisplay
 from tkinter import DoubleVar, StringVar
 from subsystems.Subsystem import Subsystem
+from widgets.QuantityVar import QuantityVar
 
 
 class Radiator(Subsystem):
@@ -14,9 +15,9 @@ class Radiator(Subsystem):
         self.radiators = data.radiators
         self.radiator_data = data.radiators[type]
         self.radiators_type = StringVar(value=type)
-        self.mass = DoubleVar()
-        self.area = DoubleVar()
-        self.waste_heat = DoubleVar()
+        self.mass = QuantityVar(unit="g")
+        self.area = QuantityVar(unit="m²")
+        self.waste_heat = QuantityVar(unit="W")
 
     def make_entry(self, frame):
         """Creates the Entry for Radiator Stuff."""
@@ -27,19 +28,15 @@ class Radiator(Subsystem):
         data = {
             "Radiator Type": {
                 "value": self.radiators_type,
-                "unit": ""
             },
             "Waste Heat": {
                 "value": self.waste_heat,
-                "unit": "kW"
             },
             "Area": {
                 "value": self.area,
-                "unit": "m²"
             },
             "Mass": {
                 "value": self.mass,
-                "unit": "kg"
             }
         }
         if not frame:
@@ -49,9 +46,9 @@ class Radiator(Subsystem):
 
     def calculate(self, waste_heat):
         """Calculates the Radiator Data."""
-        self.waste_heat.set(waste_heat / 1e3)
-        area = waste_heat / self.radiator_data["Specific area heat"]
-        mass = waste_heat / self.radiator_data["Specific area mass"]
+        self.waste_heat.set(waste_heat)
+        area = waste_heat / (self.radiator_data["Specific area heat"] * 1000)
+        mass = (area * 1000) * self.radiator_data["Specific area mass"]
         self.area.set(area)
         self.mass.set(mass)
 

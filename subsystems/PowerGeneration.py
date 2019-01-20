@@ -2,6 +2,7 @@
 
 from tkinter import DoubleVar, IntVar
 from subsystems.Subsystem import Subsystem
+from widgets.QuantityVar import QuantityVar
 
 
 class PowerGeneration(Subsystem):
@@ -13,13 +14,13 @@ class PowerGeneration(Subsystem):
         self.powergeneration = data.powergeneration
         efficiency = self.powergeneration["Reactor Efficiency"]
         self.no_reactors = IntVar(value=1)
-        self.power_need = DoubleVar()
+        self.power_need = QuantityVar(unit="W")
         self.power_reactor = DoubleVar()
-        self.mass_reactor = DoubleVar()
-        self.power_overall = DoubleVar()
-        self.power_effective = DoubleVar()
-        self.waste_heat = DoubleVar()
-        self.mass_total_reactor = DoubleVar()
+        self.mass_reactor = QuantityVar(unit="g")
+        self.power_overall = QuantityVar(unit="W")
+        self.power_effective = QuantityVar(unit="W")
+        self.waste_heat = QuantityVar(unit="W")
+        self.mass_total_reactor = QuantityVar(unit="g")
         self.efficiency = DoubleVar(value=efficiency)
 
     def make_entry(self, frame):
@@ -53,31 +54,24 @@ class PowerGeneration(Subsystem):
         data = {
             "Power Needed": {
                 "value": self.power_need,
-                "unit": "MW"
             },
             "Reactor Efficiency": {
                 "value": self.efficiency,
-                "unit": ""
             },
             "Overall Reactor Power": {
                 "value": self.power_overall,
-                "unit": "MW"
             },
             "Effective Power Overall": {
                 "value": self.power_effective,
-                "unit": "MW"
             },
             "Waste Heat": {
                 "value": self.waste_heat,
-                "unit": "MW"
             },
             "Mass per Reactor": {
                 "value": self.mass_reactor,
-                "unit": "kg"
             },
             "Total Reactor Mass": {
                 "value": self.mass_total_reactor,
-                "unit": "kg"
             },
         }
         self._make_display(frame, "Reactor Data", data)
@@ -86,8 +80,8 @@ class PowerGeneration(Subsystem):
         """Do the calculation."""
         no_reactors = self.no_reactors.get()
         efficiency = self.efficiency.get()
-        power_reactor = self.power_reactor.get()
-        reactor_mass = self.powergeneration["Reactor Mass"]
+        power_reactor = self.power_reactor.get() * 1e6
+        reactor_mass = self.powergeneration["Reactor Mass"] / 1000
         power_need = self.data.power_lifesupport + \
             self.data.power_weapons + \
             self.data.power_aux_thrusters
@@ -96,9 +90,10 @@ class PowerGeneration(Subsystem):
         waste_heat = power_overall - power_effective
         mass_reactor = power_reactor * reactor_mass
         mass_total = mass_reactor * no_reactors
+        self.data.masses["Total Reactor"] = mass_total
+        print(mass_reactor)
         self.power_need.set(power_need)
         self.power_overall.set(power_overall)
-        self.power_reactor.set(power_reactor)
         self.mass_reactor.set(mass_reactor)
         self.power_effective.set(power_effective)
         self.waste_heat.set(waste_heat)
