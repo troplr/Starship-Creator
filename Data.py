@@ -20,5 +20,7 @@ class Data():
         self.life_support = json_data["Life Support"]
         self.propulsion = json_data["Propulsion"]
         self.powergeneration = json_data["Power Generation"]
+        self.aux_thrusters = json_data["Auxiliary Thrusters"]
         self.main_frame = None
         self.masses = {}
+        self.power = {}

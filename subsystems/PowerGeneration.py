@@ -26,23 +26,13 @@ class PowerGeneration(Subsystem):
     def make_entry(self, frame):
         """Make the Entry Form."""
         entry = {
-            "Number of Reactors": {
-                "value": self.no_reactors,
-                "unit": "",
-                "type": "Spinbox",
-                "config": {
-                    "from": 1,
-                    "to": 10,
-                    "increment": 1
-                }
-            },
             "Power per Reactor": {
                 "value": self.power_reactor,
                 "unit": "MW",
                 "type": "Spinbox",
                 "config": {
                     "from": 50,
-                    "to": 1000,
+                    "to": 100 * 50,
                     "increment": 50
                 }
             }
@@ -57,6 +47,9 @@ class PowerGeneration(Subsystem):
             },
             "Reactor Efficiency": {
                 "value": self.efficiency,
+            },
+            "Needed Ractors": {
+                "value": self.no_reactors,
             },
             "Overall Reactor Power": {
                 "value": self.power_overall,
@@ -78,21 +71,23 @@ class PowerGeneration(Subsystem):
 
     def calculate(self):
         """Do the calculation."""
-        no_reactors = self.no_reactors.get()
         efficiency = self.efficiency.get()
         power_reactor = self.power_reactor.get() * 1e6
         reactor_mass = self.powergeneration["Reactor Mass"] / 1000
-        power_need = self.data.power_lifesupport + \
-            self.data.power_weapons + \
-            self.data.power_aux_thrusters
-        power_overall = power_reactor * no_reactors
-        power_effective = power_overall * efficiency
+        power_need = 0
+        for _, subsystem in self.data.power.items():
+            power_need += subsystem
+        power_effective = power_need
+        power_overall = self._roundup(power_need / efficiency, power_reactor)
+        no_reactors = power_overall / power_reactor
+        print(power_need, ', ', power_overall, ', ', no_reactors)
         waste_heat = power_overall - power_effective
         mass_reactor = power_reactor * reactor_mass
         mass_total = mass_reactor * no_reactors
-        self.data.masses["Total Reactor"] = mass_total
+        self.data.masses["Reactors"] = mass_total
         print(mass_reactor)
         self.power_need.set(power_need)
+        self.no_reactors.set(no_reactors)
         self.power_overall.set(power_overall)
         self.mass_reactor.set(mass_reactor)
         self.power_effective.set(power_effective)

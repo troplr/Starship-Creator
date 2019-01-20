@@ -84,12 +84,24 @@ class MultiEntry():
         if "values" in config:
             values = config["values"]
         if "from" in config:
-            return Spinbox(self.frame, textvariable=value, from_=begin, to=end, increment=increment)
+            return Spinbox(self.frame,
+                           textvariable=value,
+                           from_=begin, to=end,
+                           increment=increment,
+                           justify='right')
         elif "values" in config:
-            return Spinbox(self.frame, textvariable=value, values=values)
+            return Spinbox(self.frame,
+                           textvariable=value,
+                           values=values,
+                           justify='right')
         else:
             return Spinbox(self.frame)
 
     def __combobox(self, value, values):
         """Creates a Combobox."""
-        return Combobox(self.frame, textvariable=value, values=values)
+        combobox = Combobox(self.frame,
+                            textvariable=value,
+                            values=values,
+                            justify='right')
+        combobox.current(1)
+        return combobox

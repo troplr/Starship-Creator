@@ -1,7 +1,7 @@
 """Radiator Class."""
 
 from widgets.MultiDisplay import MultiDisplay
-from tkinter import DoubleVar, StringVar
+from tkinter import StringVar
 from subsystems.Subsystem import Subsystem
 from widgets.QuantityVar import QuantityVar
 
@@ -49,6 +49,7 @@ class Radiator(Subsystem):
         self.waste_heat.set(waste_heat)
         area = waste_heat / (self.radiator_data["Specific area heat"] * 1000)
         mass = (area * 1000) * self.radiator_data["Specific area mass"]
+        self.data.masses["Lifesupport Radiators"] = mass
         self.area.set(area)
         self.mass.set(mass)
 

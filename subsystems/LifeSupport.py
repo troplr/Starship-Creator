@@ -1,7 +1,7 @@
 """LifeSupport class."""
 
 from widgets.MultiDisplay import MultiDisplay
-from tkinter import DoubleVar, IntVar
+from tkinter import IntVar
 from subsystems.Radiator import Radiator
 from subsystems.Subsystem import Subsystem
 from widgets.QuantityVar import QuantityVar
@@ -105,7 +105,8 @@ class LifeSupport(Subsystem):
             self.life_support_data["Energy Requirements"] * 1e6
         volume_total = (volume_supplies + volume_habitat) * 1.1
         mass_total = mass_habitat + mass_supplies_renewable + mass_supplies_nonrenewable
-        self.data.masses["Lifesupport Mass"] = mass_total
+        self.data.masses["Lifesupport"] = mass_total
+        self.data.power["LifeSupport"] = power_requirements
 
         # Change the Labels
         self.mass_supplies_nonrenewable.set(mass_supplies_nonrenewable)
