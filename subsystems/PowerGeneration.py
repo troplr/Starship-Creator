@@ -85,6 +85,7 @@ class PowerGeneration(Subsystem):
         mass_reactor = power_reactor * reactor_mass
         mass_total = mass_reactor * no_reactors
         self.data.masses["Reactors"] = mass_total
+        self.data.wasteheat["Reactors"] = waste_heat
         print(mass_reactor)
         self.power_need.set(power_need)
         self.no_reactors.set(no_reactors)

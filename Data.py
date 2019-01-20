@@ -24,3 +24,4 @@ class Data():
         self.main_frame = None
         self.masses = {}
         self.power = {}
+        self.wasteheat = {}

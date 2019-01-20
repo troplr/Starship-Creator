@@ -5,6 +5,7 @@ from subsystems.Propulsion import Propulsion
 from subsystems.PowerGeneration import PowerGeneration
 from subsystems.AuxThrusters import AuxThrusters
 from subsystems.Subsystem import Subsystem
+from subsystems.Radiator import Radiator
 from widgets.QuantityVar import QuantityVar
 
 
@@ -19,6 +20,7 @@ class Spacecraft(Subsystem):
             "Propulsion": Propulsion(data),
             "Aux Thrusters": AuxThrusters(data),
             "Power Generation": PowerGeneration(data),
+            "Radiators": Radiator(data, "Microtube Array"),
         }
         self.no_reactors = IntVar()
         self.mass_ratio = DoubleVar(value=3)
