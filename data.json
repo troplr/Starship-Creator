@@ -87,27 +87,32 @@
   },
   "Propulsion": {
     "Thruster Mass": 650,
-    "Waste Factor": 0.0001
+    "Waste Factor": 0.0001,
+    "Volume": 1.75e-6
   },
   "Power Generation": {
     "Reactor Mass": 67.5,
-    "Reactor Efficiency": 0.775
+    "Reactor Efficiency": 0.775,
+    "Volume": 2.5e-6
   },
   "Auxiliary Thrusters": {
     "Thungsten Resistojet": {
         "Power": 100,
         "Thruster Mass": 50000,
-        "Thrust": 25000
+        "Thrust": 25000,
+        "Volume": 0.9e-8
       },
       "Microwave ElectroThermal": {
         "Power": 100,
         "Thruster Mass": 65000,
-        "Thrust": 20000
+        "Thrust": 20000,
+        "Volume": 0.95e-8
       },
       "Arcjet": {
         "Power": 100,
         "Thruster Mass": 45000,
-        "Thrust": 15000
+        "Thrust": 15000,
+        "Volume": 0.87e-8
     }
   }
 }

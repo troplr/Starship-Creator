@@ -25,3 +25,4 @@ class Data():
         self.masses = {}
         self.power = {}
         self.wasteheat = {}
+        self.volumes = {}

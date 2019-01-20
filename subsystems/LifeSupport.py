@@ -108,6 +108,7 @@ class LifeSupport(Subsystem):
         self.data.masses["Lifesupport"] = mass_total
         self.data.power["LifeSupport"] = power_requirements
         self.radiator.calculate(waste_heat)
+        self.data.volumes["Lifesupport"] = volume_total
 
         # Change the Labels
         self.mass_supplies_nonrenewable.set(mass_supplies_nonrenewable)

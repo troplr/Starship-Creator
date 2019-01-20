@@ -6,6 +6,7 @@ from subsystems.PowerGeneration import PowerGeneration
 from subsystems.AuxThrusters import AuxThrusters
 from subsystems.Subsystem import Subsystem
 from subsystems.Radiator import Radiator
+from subsystems.Size import Size
 from widgets.QuantityVar import QuantityVar
 
 
@@ -35,6 +36,10 @@ class Spacecraft(Subsystem):
         self.mass_total_dry = QuantityVar(unit="g")
         self.mass_total_wet = QuantityVar(unit="g")
         self.mass_propellant = QuantityVar(unit="g")
+        self.mass_H2O = QuantityVar(unit="g")
+        self.mass_H3 = QuantityVar(unit="g")
+        self.mass_D2 = QuantityVar(unit="g")
+        self.sizes = Size(data)
 
     def calculate(self):
         """Calculates the spacecraft."""
@@ -54,6 +59,17 @@ class Spacecraft(Subsystem):
             mass_reactor
         mass_propellant = mass_total_dry * self.mass_ratio.get()
         mass_total_wet = mass_total_dry + mass_propellant
+        mass_H3 = mass_propellant / 750
+        mass_D2 = mass_H3 * 1.25
+        mass_H2O = mass_propellant - mass_D2 - mass_H3
+        volume_H3 = mass_H3 / (442.7 * 1e3)
+        volume_D2 = mass_D2 / (169 * 1e3)
+        volume_H2O = mass_H2O / (1000 * 1e3)
+        self.data.volumes["Propellant H2O"] = volume_H2O
+        self.data.volumes["Propellant H3"] = volume_H3
+        self.data.volumes["Propellant D2"] = volume_D2
+        self.sizes.calculate()
+
         self.mass_lifesupport.set(mass_lifesupport)
         self.mass_propulsion.set(mass_propulsion)
         self.mass_reactor.set(mass_reactor)
@@ -61,6 +77,9 @@ class Spacecraft(Subsystem):
         self.mass_propellant.set(mass_propellant)
         self.mass_total_wet.set(mass_total_wet)
         self.mass_aux_thrusters.set(mass_aux_thrusters)
+        self.mass_H2O.set(mass_H2O)
+        self.mass_D2.set(mass_D2)
+        self.mass_H3.set(mass_H3)
 
     def make_entry(self, frame):
         """Creates the Multi Entry Widget."""
@@ -101,6 +120,15 @@ class Spacecraft(Subsystem):
             },
             "Propellant Mass": {
                 "value": self.mass_propellant,
+            },
+            "Propellant Mass (H2O)": {
+                "value": self.mass_H2O,
+            },
+            "Propellant Mass (Helium-3)": {
+                "value": self.mass_H3,
+            },
+            "Propellant Mass (Deuterium)": {
+                "value": self.mass_D2,
             },
             "Total Dry Mass": {
                 "value": self.mass_total_dry,

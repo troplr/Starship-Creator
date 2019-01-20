@@ -29,19 +29,11 @@ def main():
     notebook = Notebook(main)
 
     spacecraft_tab = spacecraft.make_tab(notebook)
-#    power_generation_tab = \
-#        spacecraft.subsections["Power Generation"].make_tab(notebook)
-#    propulsion_tab = spacecraft.subsections["Propulsion"].make_tab(notebook)
-#    lifesupport_tab = spacecraft.subsections["Lifesupport"].make_tab(notebook)
-#    aux_thruster_tab = space.subsections["Aux Thrusters"].make_tab(notebook)
 
     notebook.add(spacecraft_tab, text="Spacecraft")
     for key, subsystem in spacecraft.subsections.items():
         notebook.add(subsystem.make_tab(notebook), text=key)
-#    notebook.add(lifesupport_tab, text="Lifesupport")
-#    notebook.add(power_generation_tab, text="Power Generation")
-#    notebook.add(propulsion_tab, text="Propulsion")
-#    notebook.add(propulsion_tab, text="Propulsion")
+    notebook.add(spacecraft.sizes.make_tab(notebook), text="Sizes")
 
     notebook.grid(column=0, row=0)
     notebook.enable_traversal()

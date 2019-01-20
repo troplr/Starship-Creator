@@ -73,6 +73,9 @@ class AuxThrusters(Subsystem):
             thrust_total_direction = no_thrusters * thrust_aux_thrusters / 6
             self.data.masses["Auxiliary Thrusters"] = mass_total
             self.data.power["Auxiliary Thrusters"] = power_total
+            self.data.volumes["Auxiliary Thrusters"] = mass_total * \
+                thruster_data["Volume"]
+
             self.power_aux_thrusters.set(power_aux_thrusters)
             self.mass_aux_thrusters.set(mass_aux_thrusters)
             self.thrust_aux_thrusters.set(thrust_aux_thrusters)
