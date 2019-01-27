@@ -6,6 +6,7 @@ from subsystems.PowerGeneration import PowerGeneration
 from subsystems.AuxThrusters import AuxThrusters
 from subsystems.Subsystem import Subsystem
 from subsystems.Radiator import Radiator
+from subsystems.VelocityProfile import VelocityProfile
 from subsystems.Size import Size
 from widgets.QuantityVar import QuantityVar
 
@@ -40,6 +41,7 @@ class Spacecraft(Subsystem):
         self.mass_H3 = QuantityVar(unit="g")
         self.mass_D2 = QuantityVar(unit="g")
         self.sizes = Size(data)
+        self.velocities = VelocityProfile(data)
 
     def calculate(self):
         """Calculates the spacecraft."""
@@ -68,7 +70,10 @@ class Spacecraft(Subsystem):
         self.data.volumes["Propellant H2O"] = volume_H2O
         self.data.volumes["Propellant H3"] = volume_H3
         self.data.volumes["Propellant D2"] = volume_D2
+        self.data.thruster_data["Mass Ratio"] = self.mass_ratio.get()
+        self.data.thruster_data["Mass"] = mass_total_wet
         self.sizes.calculate()
+        self.velocities.calculate()
 
         self.mass_lifesupport.set(mass_lifesupport)
         self.mass_propulsion.set(mass_propulsion)

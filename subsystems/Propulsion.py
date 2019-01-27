@@ -65,6 +65,7 @@ class Propulsion(Subsystem):
         self.data.wasteheat["Thrusters"] = waste_power
         self.data.volumes["Propulsion"] = mass_total_thruster * \
             self.propulsion["Volume"]
+        self.data.thruster_data["Power"] = power_total_thruster
 
         self.mass_total_thruster.set(mass_total_thruster)
         self.power_total_thruster.set(power_total_thruster)

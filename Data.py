@@ -26,3 +26,4 @@ class Data():
         self.power = {}
         self.wasteheat = {}
         self.volumes = {}
+        self.thruster_data = {}

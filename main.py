@@ -34,6 +34,7 @@ def main():
     for key, subsystem in spacecraft.subsections.items():
         notebook.add(subsystem.make_tab(notebook), text=key)
     notebook.add(spacecraft.sizes.make_tab(notebook), text="Sizes")
+    notebook.add(spacecraft.velocities.make_tab(notebook), text="Velocity Profiles")
 
     notebook.grid(column=0, row=0)
     notebook.enable_traversal()
