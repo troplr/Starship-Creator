@@ -17,6 +17,7 @@ class Radiator(Subsystem):
         self.mass = QuantityVar(unit="g")
         self.area = QuantityVar(unit="m²")
         self.waste_heat = QuantityVar(unit="W")
+        self.radiator_temperature = QuantityVar(unit="K")
 
     def make_entry(self, frame):
         """Creates the Entry for Radiator Stuff."""
@@ -35,6 +36,9 @@ class Radiator(Subsystem):
         data = {
             "Radiator Type": {
                 "value": self.radiators_type,
+            },
+            "Radiator Temperature": {
+                "value": self.radiator_temperature,
             },
             "Waste Heat": {
                 "value": self.waste_heat,
@@ -61,6 +65,7 @@ class Radiator(Subsystem):
         self.data.masses["Lifesupport Radiators"] = mass
         self.area.set(area)
         self.mass.set(mass)
+        self.radiator_temperature.set(self.radiators[radiator_type]["Radiator Temperature"])
 
     def make_tab(self, root):
         """Creates a Tab Widgets with the Entry and Data Displays.
