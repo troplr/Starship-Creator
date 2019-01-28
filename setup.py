@@ -1,70 +1,25 @@
-# -*- coding: utf-8 -*-
-from setuptools import setup
-from setuptools.command.install import install
+#!/usr/bin/env python
 
-import os
-
-# this is quic and dirty solution to ease multi-name distribution on PyPI
-try:
-    from requirements_txt import package_name
-except ImportError:
-    package_name = 'requirements-dev.txt'
-
-
-class AbortInstall(install):
-    def run(self):
-        raise SystemExit(
-            "It looks like you meant to type "
-            "`pip install -r %s`, but you left out the `-r` "
-            "by accident. Aborting installation." % package_name
-        )
-
-
-try:
-    from pypandoc import convert
-
-    def read_md(f):
-        return convert(f, 'rst')
-
-except ImportError:
-    convert = None
-    print(
-        "warning: pypandoc module not found, could not convert Markdown to RST"
-    )
-
-    def read_md(f):
-        return open(f, 'r').read()  # noqa
-
-README = os.path.join(os.path.dirname(__file__), 'README.md')
-
+from setuptools import setup, find_packages
 
 setup(
-    name=package_name,
-    version="1.0.0",
-    author='Michał Jaworski',
-    author_email='swistakm@gmail.com',
-    description='Safeguard against one particullar "pip install" typo',
-    long_description=read_md(README),
-    url='https://github.com/troplr/Starship-Creator/requirements.txt',
-    include_package_data=True,
-    py_modules=['requirements_txt'],
-    cmdclass={'install': AbortInstall},
-
-    license="BSD",
+    name="requirements.txt",
+    version="0.1",
+    author="James Brown",
+    author_email="Roguelazer@gmail.com",
+    url="https://github.com/troplr/Starship-Creator/requirements.txt",
+    license="MIT",
+    packages=find_packages(exclude=['tests']),
+    keywords=["troll"],
+    description="making your pip installs do something",
     classifiers=[
-        'Development Status :: 4 - Beta',
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: BSD License',
-        'Operating System :: OS Independent',
-        'Programming Language :: Python',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.6',
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.2',
-        'Programming Language :: Python :: 3.3',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: Implementation :: PyPy',
-    ],
+        "Development Status :: 3 - Alpha",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3.2",
+        "Programming Language :: Python :: 3.3",
+        "Intended Audience :: Developers",
+        "Operating System :: OS Independent",
+        "License :: OSI Approved :: MIT License",
+    ]
 )
